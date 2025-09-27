@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Create a new offer</title>
+</head>
+
+<body>
+
+    <h1 th:unless="${edit}">Create a new offer for pizza [[${offer.getPizza().getName()}]]</h1>
+    <h1 th:if="${edit}">Edit offer [[${offer.title}]] for pizza [[${offer.getPizza().getName()}]]</h1>
+
+    <form th:action="${edit} ? @{/offers/edit/{id}(id=${offer.id})} : @{/offers/create}" th:object="${offer}"
+        method="post">
+
+        <!-- hidden pizza id -->
+        <input type="hidden" th:field="*{pizza}">
+
+        <!-- offer details -->
+        <div>
+            <label for="startDate">startDate:</label>
+            <input type="date" id="startDate" th:field="*{startDate}" required>
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('startDate')}">
+                <ul>
+                    <li th:each="error : ${#fields.errors('startDate')}" th:text="${error}"></li>
+                </ul>
+            </div>
+        </div>
+
+        <div>
+            <label for="endDate">endDate:</label>
+            <input type="date" id="endDate" th:field="*{endDate}" required>
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('endDate')}">
+                <ul>
+                    <li th:each="error : ${#fields.errors('endDate')}" th:text="${error}"></li>
+                </ul>
+            </div>
+        </div>
+
+        <div>
+            <label for="title">title:</label>
+            <input type="text" id="title" th:field="*{title}" required>
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('title')}">
+                <ul>
+                    <li th:each="error : ${#fields.errors('title')}" th:text="${error}"></li>
+                </ul>
+            </div>
+        </div>
+
+        <button type="submit">Submit</button>
+
+        <button type="reset">Reset all fields</button>
+
+    </form>
+
+</body>
+
+</html>

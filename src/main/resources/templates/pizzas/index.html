@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Pizzas index</title>
+</head>
+
+<body>
+
+    <h1>Pizzas</h1>
+
+    <h3 th:if="${message}" th:text="${message}"></h3>
+
+    <hr>
+
+    <div>
+        <h3>Create a new pizza</h3>
+
+        <a href="/pizzas/create">
+            <button>Create Pizza</button>
+        </a>
+    </div>
+
+    <hr>
+
+    <div>
+        <h3>Search for a pizzas by name</h3>
+        <form th:action="@{/pizzas}" method="get">
+            <input type="text" name="name" placeholder="Pizza name (eg. Margherita)" />
+            <button type="submit">Search</button>
+        </form>
+    </div>
+
+    <table th:if="${pizzas}">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="pizza : ${pizzas}">
+                <td th:text="${pizza.id}"></td>
+                <td th:text="${pizza.name}"></td>
+                <td th:text="${pizza.description}"></td>
+                <td th:text="${pizza.price}"></td>
+                <td>
+                    <a th:href="@{/pizzas/{id}(id=${pizza.id})}">
+                        <button>View details</button>
+                    </a>
+
+                    <a th:href="@{/pizzas/edit/{id}(id=${pizza.id})}">
+                        <button>Edit info</button>
+                    </a>
+
+                    <form th:action="@{/pizzas/delete/{id}(id=${pizza.id})}" method="post" style="display:inline;">
+                        <button type="submit">Delete pizza</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <hr>
+
+    <h3>Related links and actions</h3>
+
+    <a href="/offers">
+        <button>Show all offers</button>
+    </a>
+
+    <a href="/ingredients">
+        <button>Show all ingredients</button>
+    </a>
+
+</body>
+
+</html>

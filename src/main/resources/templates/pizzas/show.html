@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Pizza [[${pizza.name}]]</title>
+</head>
+
+<body>
+
+    <h1 th:if="${message}" th:text="${message}"></h1>
+
+    <th:block th:if="${pizza}">
+        <h1 th:text="${pizza.name}"></h1>
+        <p th:text="${pizza.description}"></p>
+        <p>Price: <span th:text="${pizza.price}"></span></p>
+    </th:block>
+
+    <h2>Offers</h2>
+    <!-- No offers -->
+    <th:block th:if="${#lists.isEmpty(pizza.offers)}">
+        <p>No offers available for this pizza.</p>
+    </th:block>
+
+    <!-- Has offers -->
+    <th:block th:unless="${#lists.isEmpty(pizza.offers)}">
+        <!-- <ul>
+            <li th:each="offer : ${pizza.offers}">
+                <span th:text="${offer.title}"></span>
+            </li>
+        </ul> -->
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Title</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="offer : ${pizza.offers}">
+                    <td th:text="${offer.id}"></td>
+                    <td th:text="${offer.title}"></td>
+                    <td th:text="${offer.startDate}"></td>
+                    <td th:text="${offer.endDate}"></td>
+                    <td>
+                        <a th:href="@{/offers/{id}(id=${offer.id})}">
+                            <button>View details</button>
+                        </a>
+
+                        <a th:href="@{/offers/edit/{id}(id=${offer.id})}">
+                            <button>Edit offer</button>
+                        </a>
+
+                        <form th:action="@{/offers/delete/{id}(id=${offer.id})}" method="post" style="display:inline;">
+                            <button type="submit">Delete offer</button>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </th:block>
+
+    <a th:href="@{/pizzas}">Back to all pizzas</a>
+
+    <br>
+
+    <a th:href="@{/offers/create/{id}(id=${pizza.id})}">Create a new offer</a>
+
+</body>
+
+</html>

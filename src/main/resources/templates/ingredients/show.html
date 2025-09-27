@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[[${ingredient.name}]]</title>
+</head>
+
+<body>
+
+    <h1>Ingredient [[${ingredient.name}]]</h1>
+
+    <p><b>Name: </b><span>[[${ingredient.name}]]</span></p>
+
+    <p><b>Number of pizzas with this ingredient: </b><span>[[${ingredient.pizzas.size()}]]</span></p>
+
+    <div th:if="${ingredient.pizzas.size() > 0}">
+        <h2>Pizzas with this ingredient</h2>
+        <ul>
+            <li th:each="pizza : ${ingredient.pizzas}">
+                <a th:href="@{/pizzas/{id}(id=${pizza.id})}">
+                    <span>[[${pizza.name}]]</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <a th:href="@{/ingredients}">
+        <button>Back to ingredients</button>
+    </a>
+
+</body>
+
+</html>

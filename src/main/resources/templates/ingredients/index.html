@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ingredients</title>
+</head>
+
+<body>
+
+    <h1>Ingredients</h1>
+
+    <hr>
+
+    <h3>Create a new ingredient</h3>
+    <a th:href="@{/ingredients/create}">
+        <button>Create ingredient</button>
+    </a>
+
+    <hr>
+
+    <table th:if="${ingredients.size() > 0}">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Number of pizza</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="ingredient : ${ingredients}">
+                <td th:text="${ingredient.id}"></td>
+                <td th:text="${ingredient.name}"></td>
+                <td th:text="${ingredient.pizzas.size()}"></td>
+
+                <td>
+                    <a th:href="@{/ingredients/{id}(id=${ingredient.id})}">
+                        <button>View details</button>
+                    </a>
+
+                    <a th:href="@{/ingredients/edit/{id}(id=${ingredient.id})}">
+                        <button>Edit ingredient</button>
+                    </a>
+
+                    <form th:action="@{/ingredients/delete/{id}(id=${ingredient.id})}" method="post"
+                        style="display:inline;">
+                        <button type="submit">Delete ingredient</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div th:unless="${ingredients.size() > 0}">No ingredients available</div>
+
+    <hr>
+
+    <a href="/pizzas">
+        <button>Back to pizzas</button>
+    </a>
+
+</body>
+
+</html>

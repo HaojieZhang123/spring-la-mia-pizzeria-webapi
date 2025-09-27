@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Offer [[${offer.title}]]</title>
+</head>
+
+<body>
+
+    <h1>Offer [[${offer.title}]]</h1>
+
+    <p><b>Title: </b><span>[[${offer.title}]]</span></p>
+    <p><b>Start date: </b><span>[[${offer.startDate}]]</span></p>
+    <p><b>End date: </b><span>[[${offer.endDate}]]</span></p>
+
+    <p><b>Associated pizza: </b><span>[[${offer.pizza.name}]]</span></p>
+
+    <a th:href="@{/pizzas/{id}(id=${offer.pizza.id})}">
+        <button>Back to pizza details</button>
+    </a>
+
+</body>
+
+</html>

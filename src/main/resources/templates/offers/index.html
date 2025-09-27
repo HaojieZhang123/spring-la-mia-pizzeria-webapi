@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Offers</title>
+</head>
+
+<body>
+
+    <h1>All offers</h1>
+
+    <table th:if="${offers.size() > 0}">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Start date</th>
+                <th>End date</th>
+                <th>Associated pizza</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="offer : ${offers}">
+                <td th:text="${offer.id}"></td>
+                <td th:text="${offer.title}"></td>
+                <td th:text="${offer.startDate}"></td>
+                <td th:text="${offer.endDate}"></td>
+                <td th:text="${offer.pizza.name}"></td>
+
+                <td>
+                    <a th:href="@{/offers/{id}(id=${offer.id})}">
+                        <button>View details</button>
+                    </a>
+
+                    <a th:href="@{/offers/edit/{id}(id=${offer.id})}">
+                        <button>Edit offer</button>
+                    </a>
+
+                    <form th:action="@{/offers/delete/{id}(id=${offer.id})}" method="post" style="display:inline;">
+                        <button type="submit">Delete offer</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div th:unless="${offers.size() > 0}">No offers available</div>
+
+    <hr>
+
+    <a href="/pizzas">
+        <button>Back to pizzas</button>
+    </a>
+
+</body>
+
+</html>
