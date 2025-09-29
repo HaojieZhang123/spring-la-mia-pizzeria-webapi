@@ -33,6 +33,10 @@ public class OfferService {
         return offerRepository.save(offer);
     }
 
+    public void deleteById(Integer id) {
+        offerRepository.deleteById(id);
+    }
+
     public void delete(Offer offer) {
         offerRepository.delete(offer);
     }

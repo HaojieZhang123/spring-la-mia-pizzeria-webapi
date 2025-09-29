@@ -84,7 +84,7 @@ public class OfferRestController {
         if (offerService.findById(id).isEmpty()) {
             return new ResponseEntity<Offer>(HttpStatusCode.valueOf(404)); // 404 Not Found
         } else {
-            offerService.delete(offerService.getById(id));
+            offerService.deleteById(id);
             return new ResponseEntity<Offer>(HttpStatusCode.valueOf(200)); // 200 OK
         }
     }
