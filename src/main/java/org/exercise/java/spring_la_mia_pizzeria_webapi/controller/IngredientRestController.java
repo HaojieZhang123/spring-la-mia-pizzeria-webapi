@@ -59,13 +59,28 @@ public class IngredientRestController {
             Ingredient newIngredient = new Ingredient();
             newIngredient.setName(ingredient.getName());
 
+            // add pizzas to the new ingredient, if any
             List<Pizza> pizzas = new ArrayList<>();
             for (Integer pizzaId : ingredient.getPizzaIds()) {
                 pizzas.add(pizzaService.getById(pizzaId));
             }
             newIngredient.setPizzas(pizzas);
 
-            return new ResponseEntity<Ingredient>(ingredientService.store(newIngredient), HttpStatusCode.valueOf(201));
+            // save the new ingredient
+            newIngredient = ingredientService.store(newIngredient);
+
+            // Update both sides. IDK why it doesn't work if I update only the newIngredient
+            for (Pizza pizza : pizzas) {
+                if (!pizza.getIngredients().contains(newIngredient)) {
+                    pizza.getIngredients().add(newIngredient);
+                    pizzaService.update(pizza); // Save pizza if needed
+                }
+            }
+
+            // only now can return response entity. Don;t save new ingredient as it's
+            // already saved. Show it
+            return new ResponseEntity<Ingredient>(ingredientService.findById(newIngredient.getId()).get(),
+                    HttpStatusCode.valueOf(201));
         }
     }
 
@@ -78,22 +93,42 @@ public class IngredientRestController {
         } else if (bindingResult.hasErrors()) {
             return new ResponseEntity<Ingredient>(HttpStatusCode.valueOf(400)); // 400 Bad Request
         } else {
-            Ingredient newIngredient = new Ingredient();
-            newIngredient.setId(id);
-            newIngredient.setName(ingredient.getName());
+            Ingredient existingIngredient = ingredientService.findById(id).get();
 
-            List<Pizza> pizzas = new ArrayList<>();
+            // Get pizzas from DTO
+            List<Pizza> newPizzas = new ArrayList<>();
             for (Integer pizzaId : ingredient.getPizzaIds()) {
-                pizzas.add(pizzaService.getById(pizzaId));
+                newPizzas.add(pizzaService.getById(pizzaId));
             }
-            newIngredient.setPizzas(pizzas);
 
-            return new ResponseEntity<Ingredient>(ingredientService.update(newIngredient), HttpStatusCode.valueOf(200));
+            // Remove ingredient from pizzas that are no longer linked
+            for (Pizza oldPizza : existingIngredient.getPizzas()) {
+                if (!newPizzas.contains(oldPizza)) {
+                    oldPizza.getIngredients().remove(existingIngredient);
+                    pizzaService.update(oldPizza);
+                }
+            }
+
+            // Add ingredient to new pizzas
+            for (Pizza newPizza : newPizzas) {
+                if (!newPizza.getIngredients().contains(existingIngredient)) {
+                    newPizza.getIngredients().add(existingIngredient);
+                    pizzaService.update(newPizza);
+                }
+            }
+
+            // Update ingredient's pizza list
+            existingIngredient.setName(ingredient.getName());
+            existingIngredient.setPizzas(newPizzas);
+            ingredientService.update(existingIngredient);
+
+            return new ResponseEntity<Ingredient>(ingredientService.findById(existingIngredient.getId()).get(),
+                    HttpStatusCode.valueOf(200));
         }
     }
 
-    @DeleteMapping
-    public ResponseEntity<Ingredient> delete(Integer id) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Ingredient> delete(@PathVariable("id") Integer id) {
         if (ingredientService.findById(id).isEmpty()) {
             return new ResponseEntity<Ingredient>(HttpStatusCode.valueOf(404)); // 404 Not Found
         } else {
