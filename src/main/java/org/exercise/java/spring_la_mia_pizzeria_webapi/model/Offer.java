@@ -2,6 +2,7 @@ package org.exercise.java.spring_la_mia_pizzeria_webapi.model;
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
@@ -33,7 +34,7 @@ public class Offer {
 
     @ManyToOne
     @JoinColumn(name = "pizza_id", nullable = false)
-    @JsonIgnore
+    @JsonBackReference
     private Pizza pizza;
 
     // setters and getters
