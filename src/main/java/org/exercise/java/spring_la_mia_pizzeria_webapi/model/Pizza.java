@@ -3,8 +3,6 @@ package org.exercise.java.spring_la_mia_pizzeria_webapi.model;
 import java.math.BigInteger;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -42,12 +40,10 @@ public class Pizza {
     private BigInteger price;
 
     @OneToMany(mappedBy = "pizza")
-    // @JsonManagedReference
     private List<Offer> offers;
 
     @ManyToMany
     @JoinTable(name = "ingredients_pizzas", joinColumns = @JoinColumn(name = "pizza_id"), inverseJoinColumns = @JoinColumn(name = "ingredient_id"))
-    // @JsonManagedReference
     private List<Ingredient> ingredients;
 
     // setters and getters
