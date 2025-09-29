@@ -13,8 +13,6 @@ import org.springframework.stereotype.Service;
 public class IngredientService {
     @Autowired
     private IngredientRepository ingredientRepository;
-    @Autowired
-    private PizzaService pizzaService;
 
     public List<Ingredient> findAll() {
         return ingredientRepository.findAll();
