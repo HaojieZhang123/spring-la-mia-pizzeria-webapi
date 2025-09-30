@@ -4,7 +4,6 @@ import java.math.BigInteger;
 import java.util.List;
 
 import jakarta.persistence.Lob;
-import jakarta.persistence.criteria.CriteriaBuilder.In;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
