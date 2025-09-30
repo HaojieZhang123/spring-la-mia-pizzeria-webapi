@@ -2,8 +2,12 @@ package org.exercise.java.spring_la_mia_pizzeria_webapi.model;
 
 import java.util.List;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class IngredientDTO {
+    @NotBlank(message = "Il nome dell'ingrediente non può essere vuoto")
     private String name;
+
     private List<Integer> pizzaIds;
 
     public IngredientDTO(String name, List<Integer> pizzaIds) {

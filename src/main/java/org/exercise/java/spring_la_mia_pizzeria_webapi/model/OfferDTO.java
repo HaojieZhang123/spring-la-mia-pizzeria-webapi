@@ -2,11 +2,20 @@ package org.exercise.java.spring_la_mia_pizzeria_webapi.model;
 
 import java.time.LocalDate;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 public class OfferDTO {
 
+    @NotNull(message = "La data di inizio non può essere vuota")
     private LocalDate startDate;
+
+    @NotNull(message = "La data di fine non può essere vuota")
     private LocalDate endDate;
+
+    @NotBlank(message = "Il titolo non può essere vuoto")
     private String title;
+
     private Integer pizzaId;
 
     public OfferDTO(LocalDate startDate, LocalDate endDate, String title, Integer pizzaId) {
